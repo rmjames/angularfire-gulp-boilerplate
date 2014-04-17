@@ -2,6 +2,7 @@ var gulp = require('gulp'),
 	sass = require('gulp-sass'),
 	concat = require('gulp-concat'),
 	uglify = require('gulp-uglify'),
+	changed = require('gulp-changed'),
 	imagemin = require('gulp-imagemin'),
 	prefix = require('gulp-autoprefixer');
 
@@ -13,6 +14,7 @@ var path = {
 
 gulp.task('script', function() {
 	return gulp.src(path.script)
+		.pipe(changed('build/js'))
 		.pipe(uglify())
 		.pipe(concat('all.min.js'))
 		.pipe(gulp.dest('build/js'));
@@ -20,12 +22,14 @@ gulp.task('script', function() {
 
 gulp.task('image', function() {
 	return gulp.src(path.image)
+		.pipe(changed('build/img'))
 		.pipe(imagemin({optimizationLevel: 5}))
 		.pipe(gulp.dest('build/img'));
 });
 
 gulp.task('sass', function() {
 	return gulp.src(path.sass)
+		.pipe(changed('build/css'))
 		.pipe(sass())
 		.pipe(prefix('last 1 version', "> 1%", {cascade: true}))
 		.pipe(gulp.dest('build/css'));
